@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Spatial Proteomics — Thesis Compendium & Research Roadmap</title>
+    <style>
+        :root {
+            --bg: #0a0f18;
+            --surface: #111827;
+            --surface-2: #1a2236;
+            --surface-3: #1f2a40;
+            --border: #263148;
+            --text: #e2e8f0;
+            --text-secondary: #b0bec5;
+            --text-muted: #7b8ca3;
+            --accent: #4da6ff;
+            --accent-2: #38bdf8;
+            --accent-glow: rgba(77, 166, 255, 0.18);
+            --orange: #f59e0b;
+            --green: #34d399;
+            --red: #f87171;
+            --purple: #a78bfa;
+            --pink: #f472b6;
+            --teal: #2dd4bf;
+            --gold: #fbbf24;
+            --radius-sm: 6px;
+            --radius: 10px;
+            --radius-lg: 16px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-mono: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Slide Container */
+        .slide {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .slide-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Background ornament */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -15%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        .slide:nth-child(even)::before {
+            left: -15%;
+            right: auto;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(2rem, 3.8vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #e2e8f0 0%, #b0c4de 40%, #4da6ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            font-size: clamp(1.4rem, 2.4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #e2e8f0;
+            margin-bottom: 0.3rem;
+        }
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-2);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        h3 .icon-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-2);
+            box-shadow: 0 0 10px var(--accent-2);
+            flex-shrink: 0;
+        }
+        h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 0.4rem;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.04em;
+            font-weight: 400;
+        }
+        .meta-tag {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .tag-blue {
+            background: rgba(77, 166, 255, 0.18);
+            color: #4da6ff;
+            border: 1px solid rgba(77, 166, 255, 0.3);
+        }
+        .tag-green {
+            background: rgba(52, 211, 153, 0.18);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+        .tag-orange {
+            background: rgba(245, 158, 11, 0.18);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .tag-red {
+            background: rgba(248, 113, 113, 0.18);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        .tag-purple {
+            background: rgba(167, 139, 250, 0.18);
+            color: #a78bfa;
+            border: 1px solid rgba(167, 139, 250, 0.3);
+        }
+        .tag-teal {
+            background: rgba(45, 212, 191, 0.18);
+            color: #2dd4bf;
+            border: 1px solid rgba(45, 212, 191, 0.3);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem 1.6rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .card:hover {
+            border-color: rgba(77, 166, 255, 0.35);
+            box-shadow: 0 6px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(77, 166, 255, 0.1);
+        }
+        .card-accent {
+            border-left: 3px solid var(--accent);
+        }
+        .card-orange {
+            border-left: 3px solid var(--orange);
+        }
+        .card-green {
+            border-left: 3px solid var(--green);
+        }
+        .card-purple {
+            border-left: 3px solid var(--purple);
+        }
+        .card-pink {
+            border-left: 3px solid var(--pink);
+        }
+        .card-teal {
+            border-left: 3px solid var(--teal);
+        }
+        .card-red {
+            border-left: 3px solid var(--red);
+        }
+        .card-gold {
+            border-left: 3px solid var(--gold);
+        }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .grid-2-1 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.2rem;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        thead {
+            background: var(--surface-2);
+        }
+        thead th {
+            padding: 0.7rem 0.9rem;
+            text-align: left;
+            font-weight: 700;
+            color: var(--accent-2);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            border-bottom: 2px solid var(--border);
+        }
+        tbody td {
+            padding: 0.65rem 0.9rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        tbody tr:hover {
+            background: var(--surface-2);
+        }
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .code-cell {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: var(--surface-3);
+            padding: 0.3rem 0.5rem;
+            border-radius: var(--radius-sm);
+            color: #cbd5e1;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+
+        /* Formula block */
+        .formula-block {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.3rem;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            overflow-x: auto;
+            line-height: 1.7;
+            margin: 0.6rem 0;
+        }
+
+        /* Highlight box */
+        .highlight-box {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.3rem;
+            font-size: 0.88rem;
+        }
+        .highlight-box strong {
+            color: var(--accent-2);
+        }
+
+        /* Verdict badge */
+        .verdict {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        .verdict-yes {
+            background: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+        }
+        .verdict-no {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.4);
+        }
+        .verdict-warn {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        /* Nav */
+        .slide-nav {
+            position: fixed;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .slide-nav a {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: var(--transition);
+            display: block;
+        }
+        .slide-nav a:hover,
+        .slide-nav a.active {
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 101;
+            transition: width 0.2s ease;
+        }
+
+        /* Badge row */
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 0.6rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .grid-2,
+            .grid-3,
+            .grid-4,
+            .grid-2-1 {
+                grid-template-columns: 1fr;
+            }
+            .slide {
+                padding: 2rem 1rem;
+            }
+            .slide-nav {
+                right: 0.3rem;
+            }
+            .slide-nav a {
+                width: 7px;
+                height: 7px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            h2 {
+                font-size: 1.25rem;
+            }
+            .code-cell {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media print {
+            .slide {
+                min-height: auto;
+                page-break-after: always;
+                scroll-snap-align: none;
+                padding: 1.5rem;
+            }
+            .slide-nav,
+            .progress-bar {
+                display: none;
+            }
+            body {
+                background: #fff;
+                color: #000;
+            }
+            .card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .slide-inner>* {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .slide-inner>*:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        .slide-inner>*:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+        .slide-inner>*:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slide Navigation -->
+    <nav class="slide-nav" id="slideNav">
+        <a href="#slide1" title="Title"></a>
+        <a href="#slide2" title="Sub-Domain Mapping"></a>
+        <a href="#slide3" title="Benchmark Papers"></a>
+        <a href="#slide4" title="Research Gaps A & B"></a>
+        <a href="#slide5" title="Research Gaps C & D"></a>
+        <a href="#slide6" title="Thesis 1 & 2"></a>
+        <a href="#slide7" title="Thesis 3 & 4"></a>
+        <a href="#slide8" title="Datasets"></a>
+        <a href="#slide9" title="Bangladesh Feasibility"></a>
+        <a href="#slide10" title="Summary Roadmap"></a>
+    </nav>
+
+    <!-- ==================== SLIDE 1: TITLE ==================== -->
+    <section class="slide" id="slide1">
+        <div class="slide-inner" style="text-align:center;">
+            <span class="meta-tag tag-blue" style="margin-bottom:1rem;">Ph.D. Thesis Compendium & Research Roadmap</span>
+            <h1 style="margin-bottom:0.8rem;">Virtual Spatial Proteomics<br>from Histopathology</h1>
+            <p class="subtitle" style="font-size:1.2rem;max-width:700px;margin:0 auto 1.5rem;">
+                Architectures, Gaps, & Feasibility for H&E-to-Multiplex Protein Mapping
+            </p>
+            <div class="badge-row" style="justify-content:center;">
+                <span class="meta-tag tag-green">Image-to-Image Translation</span>
+                <span class="meta-tag tag-purple">Graph Neural Networks</span>
+                <span class="meta-tag tag-orange">Multimodal Fusion</span>
+                <span class="meta-tag tag-teal">Foundation Models</span>
+                <span class="meta-tag tag-red">Interpretability</span>
+            </div>
+            <p style="color:var(--text-muted);margin-top:1.5rem;font-size:0.9rem;">
+                Covering: HEX · CANVAS · GigaTIME · ROSIE · HEIST · OmiCLIP · VirTues · HEST-1k
+            </p>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 2: SUB-DOMAIN MAPPING ==================== -->
+    <section class="slide" id="slide2">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 1.1 Sub-Domain Mapping & Advanced Search Strings</h3>
+            <p style="color:var(--text-secondary);margin-bottom:1rem;font-size:0.9rem;">
+                Five sub-domains spanning the thesis landscape — each with targeted database queries for comprehensive literature retrieval.
+            </p>
+            <div class="grid-2">
+                <div class="card card-accent">
+                    <h4>🔬 Image-to-Image Translation for Virtual Spatial Proteomics</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem;">Pixel-level H&E → 40-channel CODEX regression</p>
+                    <div class="code-cell">("virtual staining" OR "image-to-image translation" OR "pixel-level prediction") AND ("spatial proteomics" OR "multiplex imaging" OR CODEX OR MIBI) AND ("histopathology" OR "H&E") AND deep learning</div>
+                    <div class="code-cell" style="margin-top:0.3rem;">("conditional diffusion" OR "GAN" OR "masked autoencoder") AND ("virtual staining" OR "multiplex") AND histopathology</div>
+                </div>
+                <div class="card card-purple">
+                    <h4>🧬 WSI Multimodal Fusion for Prognosis</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem;">MIL + cross-modal attention + survival analysis</p>
+                    <div class="code-cell">("whole slide image" OR WSI) AND ("multimodal fusion" OR "cross-modal" OR "late fusion") AND ("spatial transcriptomics" OR "spatial proteomics") AND ("survival" OR "prognosis" OR "Cox")</div>
+                    <div class="code-cell" style="margin-top:0.3rem;">"multiple instance learning" AND "multimodal" AND histopathology AND spatial</div>
+                </div>
+                <div class="card card-green">
+                    <h4>🕸️ Cellular Neighborhood Graph Neural Networks</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem;">Spatial graphs + hierarchical transformers</p>
+                    <div class="code-cell">("cellular neighborhood" OR "cellular community" OR "spatial graph") AND ("GNN" OR "graph transformer" OR "message passing") AND ("spatial transcriptomics" OR "spatial proteomics")</div>
+                    <div class="code-cell" style="margin-top:0.3rem;">"graph neural network" AND "spatial transcriptomics" AND histopathology</div>
+                </div>
+                <div class="card card-teal">
+                    <h4>👁️ Vision-Language Models for Spatial Biology</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem;">CLIP-style contrastive alignment</p>
+                    <div class="code-cell">("vision-language" OR VLM OR "CLIP" OR "contrastive language-image") AND ("spatial transcriptomics" OR "spatial proteomics" OR histopathology)</div>
+                    <div class="code-cell" style="margin-top:0.3rem;">"foundation model" AND "spatial omics" AND histopathology</div>
+                </div>
+                <div class="card card-orange" style="grid-column: 1 / -1;">
+                    <h4>🏗️ Spatial Omics Foundation Models</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem;">Large-scale pretrained models (HEIST, OmiCLIP, GigaTIME)</p>
+                    <div class="code-cell">("foundation model" OR "pretrained" OR "self-supervised") AND ("spatial transcriptomics" OR "spatial proteomics") AND histopathology — <em>PubMed, Google Scholar, IEEE Xplore</em></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 3: BENCHMARK PAPERS ==================== -->
+    <section class="slide" id="slide3">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 1.2 Benchmark Papers & Technical Counter-Weights</h3>
+            <p style="color:var(--text-secondary);margin-bottom:1rem;font-size:0.9rem;">
+                Six frameworks representing distinct architectural paradigms — each a potential counter-weight to HEX.
+            </p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Framework</th>
+                            <th>Venue</th>
+                            <th>Key Technical Distinctiveness</th>
+                            <th>Relation to HEX</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>CANVAS</strong></td>
+                            <td><span class="meta-tag tag-purple">Cell 2026</span></td>
+                            <td>41-plex, 18M cells, 457 NSCLC; models <strong>cellular neighborhoods & tumor ecological habitats</strong> — graph-based spatial ecology on top of marker prediction</td>
+                            <td><span class="verdict verdict-warn">Extension</span> — same Stanford lab; risks derivative work</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GigaTIME</strong></td>
+                            <td><span class="meta-tag tag-blue">Cell 2025</span></td>
+                            <td>Built on GigaPath (<em>Nature</em> 2024); H&E→virtual mIF at <strong>single-cell resolution</strong>; 40M cells; population-scale TIME analysis</td>
+                            <td><span class="verdict verdict-yes">True Counter-Weight</span> — different lineage & scale</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ROSIE</strong></td>
+                            <td><span class="meta-tag tag-green">Nat Commun 2025</span></td>
+                            <td>Predicts <strong>50 biomarkers</strong>; 1,300+ paired samples, 16M+ cells; 10+ tissues, 13 diseases</td>
+                            <td><span class="verdict verdict-yes">Direct Competitor</span> — broader coverage</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HEIST</strong></td>
+                            <td><span class="meta-tag tag-orange">arXiv 2025</span></td>
+                            <td><strong>Hierarchical graph transformer</strong>; 22.3M cells, 124 tissues; models cellular neighborhoods + GRNs — graph-based, not patch-based</td>
+                            <td><span class="verdict verdict-yes">Architectural Counter-Weight</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>OmiCLIP</strong></td>
+                            <td><span class="meta-tag tag-teal">Nat Methods 2025</span></td>
+                            <td><strong>Visual–omics CLIP-style</strong>; 2.2M patches, 1,007 samples, 32 organs; transcriptomics focus</td>
+                            <td><span class="verdict verdict-yes">Modality Counter-Weight</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>VirTues</strong></td>
+                            <td><span class="meta-tag tag-red">2025</span></td>
+                            <td>Transformer with <strong>spatial+marker tokenization</strong>; attention scaling to high-dim multiplex data</td>
+                            <td><span class="verdict verdict-yes">Methodological Counter-Weight</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="highlight-box" style="margin-top:1rem;">
+                <strong>🔑 Key Distinction:</strong> Your thesis should position itself relative to <em>architectural</em> differences. Core question — <em>What is the optimal paradigm for H&E→spatial-proteomics?</em> Patch-based ViT (HEX)? Graph-based (CANVAS, HEIST)? Contrastive FM (OmiCLIP)? Or hybrid?
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 4: RESEARCH GAPS A & B ==================== -->
+    <section class="slide" id="slide4">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 2. Research Gaps — Thesis Generators A & B</h3>
+            <div class="grid-2">
+                <!-- Gap A -->
+                <div class="card card-red">
+                    <h4>🔴 Gap A: Geometric & Morphological Ceilings</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.6rem;">
+                        Some proteins (PD-1, PD-L1, Granzyme B) lack visual correlates in H&E — driven by cellular state, not morphology.
+                    </p>
+                    <div class="formula-block">
+                        <strong>Information Gap:</strong><br>
+                        H&E image X ∈ ℝ<sup>H×W×3</sup> → CODEX Y ∈ ℝ<sup>H×W×40</sup><br>
+                        HEX learns f<sub>θ</sub>: X → Ŷ minimizing<br>
+                        𝓛 = ‖Y − Ŷ‖²₂ + λ 𝓛<sub>SSIM</sub><br>
+                        <strong>Ceiling:</strong> min<sub>f</sub> 𝔼[‖Y − f(X)‖²] — but X lacks<br>
+                        info about PTMs, signaling states, transient expression.<br>
+                        <em>I(Y; X) is fundamentally bounded.</em>
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--accent-2);margin-top:0.5rem;">
+                        <strong>→ Thesis:</strong> Auxiliary features (nuclear morphology, chromatin texture) + uncertainty quantification.
+                    </p>
+                </div>
+                <!-- Gap B -->
+                <div class="card card-orange">
+                    <h4>🟠 Gap B: Out-of-Distribution Domain Shift</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.6rem;">
+                        HEX trained on Stanford data — clinical deployment faces staining variability (20+ protocols), scanner differences (5+ manufacturers), and tissue artifacts.
+                    </p>
+                    <div class="formula-block">
+                        <strong>Domain Shift:</strong><br>
+                        D<sub>train</sub> ~ P<sub>train</sub>(X,Y), D<sub>test</sub> ~ P<sub>test</sub>(X,Y)<br>
+                        P<sub>train</sub> ≠ P<sub>test</sub><br>
+                        Δ = D<sub>KL</sub>(P<sub>train</sub> ‖ P<sub>test</sub>)<br><br>
+                        <strong>Covariate shift:</strong> P<sub>train</sub>(X) ≠ P<sub>test</sub>(X)<br>
+                        <strong>Concept shift:</strong> P<sub>train</sub>(Y|X) ≠ P<sub>test</sub>(Y|X)
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--accent-2);margin-top:0.5rem;">
+                        <strong>→ Thesis:</strong> Adversarial domain adaptation, stain normalization, test-time adaptation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 5: RESEARCH GAPS C & D ==================== -->
+    <section class="slide" id="slide5">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 2. Research Gaps — Thesis Generators C & D</h3>
+            <div class="grid-2">
+                <!-- Gap C -->
+                <div class="card card-purple">
+                    <h4>🟣 Gap C: Scalability of Multi-Modal Tokenization</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.6rem;">
+                        HEX's 224×224 px patches miss global context: tumor-stroma ratios, long-range dependencies, multi-scale relationships. Cross-attention is O(N²) — intractable for ~200k patches per WSI.
+                    </p>
+                    <div class="formula-block">
+                        <strong>Patch Count:</strong><br>
+                        N = ⌊(H−p)/s + 1⌋ × ⌊(W−p)/s + 1⌋<br>
+                        For WSI at 20× (0.5 µm/px):<br>
+                        100k × 100k px → N ≈ <strong>200,000 patches</strong><br>
+                        Cross-attention: <strong>O(N²) ≈ 4×10¹⁰</strong> — intractable<br>
+                        HEX likely uses MIL pooling → loses spatial structure.
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--accent-2);margin-top:0.5rem;">
+                        <strong>→ Thesis:</strong> Hierarchical graph transformer with multi-scale tokens + efficient attention (linear, neighborhood sampling).
+                    </p>
+                </div>
+                <!-- Gap D -->
+                <div class="card card-pink">
+                    <h4>🩷 Gap D: Diagnostic Indeterminacy & Interpretability</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.6rem;">
+                        HEX predicts proteins and outcomes — but is it learning true biology or spurious correlations? MICA improved prognosis by 22% and immunotherapy prediction by 24-39%, yet the <em>why</em> remains opaque.
+                    </p>
+                    <div class="highlight-box">
+                        <strong>Black Box Paradox:</strong><br>
+                        • Model predicts proteins → clinicians can't verify without CODEX<br>
+                        • Causal vs. correlational — predicting immune markers from necrosis?<br>
+                        • <strong>Actionability gap:</strong> What confidence threshold justifies treatment change?
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--accent-2);margin-top:0.5rem;">
+                        <strong>→ Thesis:</strong> Integrated Gradients, counterfactual explanations, causal discovery to disentangle biological signal from spurious correlation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 6: THESIS 1 & 2 ==================== -->
+    <section class="slide" id="slide6">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 3. Thesis Formulations 1 & 2</h3>
+            <div class="grid-2">
+                <!-- Thesis 1 -->
+                <div class="card card-red" style="border-top:3px solid var(--red);">
+                    <span class="meta-tag tag-red" style="margin-bottom:0.5rem;">Thesis 1</span>
+                    <h4>Uncertainty-Aware Virtual Spatial Proteomics</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Quantifying the Information Gap Between H&E Morphology and Protein Expression</p>
+                    <div class="highlight-box" style="margin-top:0.6rem;font-size:0.82rem;">
+                        <strong>Core Innovation:</strong> Model P(Y|X) as a <em>distribution</em> via:<br>
+                        • Conditional Diffusion Models<br>
+                        • Evidential Deep Learning (Dirichlet parameters)<br>
+                        • Deep Ensembles for variance estimation
+                    </div>
+                    <div class="formula-block" style="font-size:0.75rem;">
+                        <strong>Evidential Head:</strong> Predict (α<sub>i,j,k</sub>, β<sub>i,j,k</sub>) per pixel<br>
+                        𝓛 = ‖Y − Ŷ‖²₂ + λ D<sub>KL</sub>(P<sub>pred</sub> ‖ P<sub>prior</sub>)
+                    </div>
+                    <p style="font-size:0.78rem;color:var(--accent-2);"><strong>Metrics:</strong> ECE, Selective Prediction AUROC, SSIM/PSNR for high-confidence regions</p>
+                </div>
+                <!-- Thesis 2 -->
+                <div class="card card-orange" style="border-top:3px solid var(--orange);">
+                    <span class="meta-tag tag-orange" style="margin-bottom:0.5rem;">Thesis 2</span>
+                    <h4>Domain-Generalizable Virtual Spatial Proteomics</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Closing the Clinical Translation Gap via Test-Time Adaptation</p>
+                    <div class="highlight-box" style="margin-top:0.6rem;font-size:0.82rem;">
+                        <strong>Core Innovation:</strong> 3-stage pipeline:<br>
+                        1. Train on source with domain-invariant features<br>
+                        2. Adapt to target with minimal paired data (5-10 WSIs)<br>
+                        3. Generalize across cancer types
+                    </div>
+                    <div class="formula-block" style="font-size:0.75rem;">
+                        <strong>Domain Confusion (GRL):</strong><br>
+                        min<sub>θ</sub> max<sub>φ</sub> 𝔼<sub>X~P<sub>S</sub></sub>[log D<sub>φ</sub>(f<sub>θ</sub>(X))]<br>
+                        + 𝔼<sub>X~P<sub>T</sub></sub>[log(1 − D<sub>φ</sub>(f<sub>θ</sub>(X)))]<br>
+                        <strong>TTA:</strong> 𝓛<sub>adapt</sub> = H(Ŷ) + λ‖∇<sub>θ</sub>H(Ŷ)‖²₂
+                    </div>
+                    <p style="font-size:0.78rem;color:var(--accent-2);"><strong>Metrics:</strong> Pearson R on target, FHD, Domain Shift D<sub>KL</sub>, Generalization Gap</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 7: THESIS 3 & 4 ==================== -->
+    <section class="slide" id="slide7">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 3. Thesis Formulations 3 & 4</h3>
+            <div class="grid-2">
+                <!-- Thesis 3 -->
+                <div class="card card-green" style="border-top:3px solid var(--green);">
+                    <span class="meta-tag tag-green" style="margin-bottom:0.5rem;">⭐ Thesis 3 — RECOMMENDED</span>
+                    <h4>Graph-Based Spatial Proteomics from Histopathology</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Modeling Cellular Neighborhoods for Improved Protein Prediction</p>
+                    <div class="highlight-box" style="margin-top:0.6rem;font-size:0.82rem;">
+                        <strong>End-to-End GNN Pipeline:</strong><br>
+                        1. Hover-Net / StarDist → nuclei segmentation<br>
+                        2. Per-cell morphology + texture features<br>
+                        3. Delaunay / k-NN spatial graph G = (V, E)<br>
+                        4. Hierarchical Graph Transformer message passing<br>
+                        5. Per-node protein regression + graph-level prognosis
+                    </div>
+                    <div class="formula-block" style="font-size:0.75rem;">
+                        h<sub>i</sub><sup>(0)</sup> = MLP([morph<sub>i</sub>, text<sub>i</sub>, chromatin<sub>i</sub>])<br>
+                        h<sub>i</sub><sup>(l+1)</sup> = Attn(h<sub>i</sub><sup>(l)</sup>, {h<sub>j</sub><sup>(l)</sup>: j∈𝒩(i)})<br>
+                        Ŷ<sub>i</sub> = MLP(h<sub>i</sub><sup>(L)</sup>), &nbsp;h<sub>G</sub> = Pool({h<sub>i</sub><sup>(L)</sup>})<br>
+                        Ť = CoxPH(h<sub>G</sub>)
+                    </div>
+                    <p style="font-size:0.78rem;color:var(--accent-2);"><strong>Metrics:</strong> Per-cell Pearson R, F1 for neighborhoods, C-index, AUC for IO response</p>
+                </div>
+                <!-- Thesis 4 -->
+                <div class="card card-pink" style="border-top:3px solid var(--pink);">
+                    <span class="meta-tag tag-purple" style="margin-bottom:0.5rem;">Thesis 4</span>
+                    <h4>Mechanistic Interpretability of Virtual Spatial Proteomics</h4>
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Disentangling Biological Signal from Spurious Correlation</p>
+                    <div class="highlight-box" style="margin-top:0.6rem;font-size:0.82rem;">
+                        <strong>Interpretability Toolkit:</strong><br>
+                        • Causal Discovery — learn causal graph between H&E features, proteins, outcomes<br>
+                        • Counterfactual Generation — modify H&E → observe protein Δ<br>
+                        • Concept Attribution — map predictions to "lymphocyte density," "stromal fibrosis"<br>
+                        • Integrated Gradients + Attention visualization
+                    </div>
+                    <div class="formula-block" style="font-size:0.75rem;">
+                        <strong>Integrated Gradients:</strong><br>
+                        IG<sub>i</sub>(x) = (x<sub>i</sub>−x'<sub>i</sub>) ∫<sub>0</sub><sup>1</sup> ∂f(x'+α(x−x'))/∂x<sub>i</sub> dα<br>
+                        <strong>Counterfactual:</strong><br>
+                        min<sub>x'</sub> ‖f(x')−y<sub>target</sub>‖² + λ‖x'−x‖²
+                    </div>
+                    <p style="font-size:0.78rem;color:var(--accent-2);"><strong>Metrics:</strong> Faithfulness, Human eval (Likert), Actionability %, Causal validity</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 8: DATASETS ==================== -->
+    <section class="slide" id="slide8">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 4. Dataset Specification & Required Data Structure</h3>
+            <div class="grid-2" style="margin-bottom:1rem;">
+                <div class="card card-accent">
+                    <h4>📋 Minimal Data Requirements (HEX-style)</h4>
+                    <table style="font-size:0.8rem;margin-top:0.5rem;">
+                        <thead>
+                            <tr><th>Component</th><th>Specification</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>H&E WSI</td><td>20×/40×, 0.5 µm/px, SVS/TIFF/NDPI</td></tr>
+                            <tr><td>Spatial Proteomics</td><td>CODEX/MIBI/IMC, 30-50 markers, aligned</td></tr>
+                            <tr><td>Clinical Metadata</td><td>OS, PFS, RECIST, TNM, age, sex, smoking</td></tr>
+                            <tr><td>Cohort Size</td><td>≥300 train, ≥200 validation</td></tr>
+                            <tr><td>Patch Alignment</td><td>224×224 px ↔ protein vectors at same coords</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card card-green">
+                    <h4>📦 Recommended Primary Dataset</h4>
+                    <p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong>HEX/CANVAS CODEX Cohort</strong> — Zenodo (Stanford)</p>
+                    <ul style="font-size:0.82rem;color:var(--text-secondary);padding-left:1.2rem;line-height:1.6;">
+                        <li>457 NSCLC patients</li>
+                        <li>H&E WSIs + 41-plex CODEX</li>
+                        <li>Clinical outcomes (survival, IO response)</li>
+                        <li>Pre-aligned patches at multiple resolutions</li>
+                        <li>Direct comparability with published HEX & CANVAS</li>
+                    </ul>
+                </div>
+            </div>
+            <h4 style="margin-bottom:0.5rem;">🗂️ Expert-Curated Open-Source Datasets</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Dataset</th><th>Repository</th><th>Modality</th><th>Size</th><th>Key Features</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>HEX/CANVAS</strong></td>
+                            <td>Zenodo</td>
+                            <td>H&E + 41-plex CODEX</td>
+                            <td>457 NSCLC, 18M cells</td>
+                            <td><span class="meta-tag tag-green">Best Match</span> — directly replicates HEX</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HEST-1k</strong></td>
+                            <td>HuggingFace / GitHub</td>
+                            <td>H&E + 10x Visium ST</td>
+                            <td>1,108-1,276 profiles, 25 organs</td>
+                            <td>Largest public ST-histology dataset; includes NSCLC</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ST-bank (OmiCLIP)</strong></td>
+                            <td>Zenodo / Synapse</td>
+                            <td>H&E + 10x Visium ST</td>
+                            <td>2.2M patches, 1,007 samples</td>
+                            <td>Excellent for multimodal FM pretraining</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TCGA + Spatial</strong></td>
+                            <td>GDC Portal / GEO</td>
+                            <td>H&E + RNA-seq</td>
+                            <td>11,000+ patients, 33 cancers</td>
+                            <td>No direct spatial proteomics; bulk RNA-seq as proxy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HTAN</strong></td>
+                            <td>HTAN Data Portal</td>
+                            <td>H&E + multiplex + ST</td>
+                            <td>Multiple cancer types</td>
+                            <td>CODEX, MIBI, Visium; requires data access request</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">
+                <strong>Alternative fallback:</strong> If CODEX access is restricted, use <strong>HEST-1k</strong> with 10x Visium ST. Task shifts to gene expression prediction but methodological challenges (patch-to-spot mapping, multimodal fusion, graph modeling) are identical.
+            </p>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 9: BANGLADESH FEASIBILITY ==================== -->
+    <section class="slide" id="slide9">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 4.2 Bangladesh Feasibility Audit</h3>
+            <div class="grid-2" style="margin-bottom:1rem;">
+                <div class="card card-red">
+                    <h4>❌ CODEX / Spatial Proteomics Infrastructure</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);">
+                        <strong>Absent.</strong> No commercial CODEX, MIBI, or IMC platforms in Bangladesh. Akoya Biosciences, Ionpath, and Fluidigm have no local installations. <em>Wet-lab spatial proteomics is not feasible within a 2-3 year thesis timeline.</em>
+                    </p>
+                </div>
+                <div class="card card-orange">
+                    <h4>⚠️ H&E Digital Pathology</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);">
+                        <strong>Limited but growing.</strong> Some tertiary hospitals (BSMMU, Dhaka Medical College, NICRH) have digital scanners, but WSI archiving is not standardized.
+                    </p>
+                </div>
+                <div class="card card-green">
+                    <h4>✅ Computational Infrastructure</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);">
+                        <strong>Adequate.</strong> GPU clusters at BUET, BRAC University, and via cloud (AWS, GCP, Azure). Model development, training, and evaluation are <strong>fully feasible</strong> with cloud GPU resources.
+                    </p>
+                </div>
+                <div class="card card-orange">
+                    <h4>⚠️ Clinical Data & Ethics</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary);">
+                        <strong>Fragmented.</strong> No centralized cancer registry with linked H&E and outcomes. NICRH has paper-based records. <strong>BMRC ethics approval is established.</strong>
+                    </p>
+                </div>
+            </div>
+            <div class="highlight-box" style="border-left:4px solid var(--green);">
+                <strong>✅ Verdict: This research CAN be conducted in Bangladesh</strong> — but <em>exclusively using open-source, publicly available datasets</em>. Local wet-lab spatial proteomics is not feasible. Computational components are fully feasible with cloud GPU resources.<br><br>
+                <strong>Risk Mitigation:</strong> (1) Collaborate with international partners (Stanford, Yale, MD Anderson) for data access. (2) Use pre-processed datasets from public repositories. (3) Focus on <em>computational</em> innovation, not experimental data generation. (4) Consider spatial transcriptomics (10x Visium) as a proxy — more publicly available than CODEX.
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SLIDE 10: SUMMARY ROADMAP ==================== -->
+    <section class="slide" id="slide10">
+        <div class="slide-inner">
+            <h3><span class="icon-dot"></span> 5. Thesis Roadmap at a Glance</h3>
+            <div class="table-wrapper" style="margin-bottom:1.5rem;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Thesis Direction</th>
+                            <th>Gap</th>
+                            <th>Core Innovation</th>
+                            <th>Primary Dataset</th>
+                            <th>BD Feasibility</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. Uncertainty-Aware</strong></td>
+                            <td><span class="meta-tag tag-red">A: Ceilings</span></td>
+                            <td>Evidential DL + Diffusion for uncertainty quantification</td>
+                            <td>HEX/CANVAS CODEX</td>
+                            <td><span class="verdict verdict-yes">✅ High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. Domain Generalization</strong></td>
+                            <td><span class="meta-tag tag-orange">B: Shift</span></td>
+                            <td>Test-time adaptation + stain normalization</td>
+                            <td>HEX/CANVAS + external</td>
+                            <td><span class="verdict verdict-yes">✅ High</span></td>
+                        </tr>
+                        <tr style="background:rgba(52,211,153,0.06);">
+                            <td><strong>⭐ 3. Graph-Based</strong></td>
+                            <td><span class="meta-tag tag-purple">C: Tokenization</span></td>
+                            <td>Graph transformer with cellular neighborhoods</td>
+                            <td>HEST-1k or HEX/CANVAS</td>
+                            <td><span class="verdict verdict-yes">✅ High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. Interpretability</strong></td>
+                            <td><span class="meta-tag tag-pink">D: Black Box</span></td>
+                            <td>Causal discovery + counterfactuals</td>
+                            <td>Any paired dataset</td>
+                            <td><span class="verdict verdict-yes">✅ High</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card card-green" style="border:2px solid rgba(52,211,153,0.4);">
+                <h4>⭐ RECOMMENDATION: Thesis 3 — Graph-Based Spatial Proteomics</h4>
+                <p style="font-size:0.9rem;color:var(--text-secondary);">
+                    <strong>Strongest differentiation from existing work.</strong> Directly addresses the architectural limitation of HEX's patch-based approach while leveraging methodological advances from CANVAS and HEIST. Technically ambitious yet feasible with public data. Positions you at the intersection of two hot research threads — <em>graph neural networks + spatial omics</em> — without requiring wet-lab infrastructure.
+                </p>
+                <div class="badge-row" style="margin-top:0.6rem;">
+                    <span class="meta-tag tag-green">High Impact</span>
+                    <span class="meta-tag tag-purple">Architecturally Novel</span>
+                    <span class="meta-tag tag-teal">Feasible in Bangladesh</span>
+                    <span class="meta-tag tag-orange">Strong Benchmark Comparability</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Progress bar & active nav dot
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const navLinks = document.querySelectorAll('#slideNav a');
+
+        function updateProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = progress + '%';
+
+            // Update active nav dot
+            let activeIndex = 0;
+            slides.forEach((slide, i) => {
+                const rect = slide.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    activeIndex = i;
+                }
+            });
+            navLinks.forEach((link, i) => {
+                link.classList.toggle('active', i === activeIndex);
+            });
+        }
+
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+
+        // Smooth scroll for nav dots
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
